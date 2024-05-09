@@ -15,6 +15,10 @@ In order to install the normalizer with the provided Dockerfile you need to clon
 docker build --tag 'relational-normalizer' .
 docker run -d --name  'web-relational-normalizer' 'relational-normalizer'
 ```
+Or pulling the latest build image with
+```
+docker run -d --name 'web-relational-normalizer' ghcr.io/unict-dmi/web-relational-normalizer:main
+```
 
 ### 💻 Local installation
 Install [sbcl](http://www.sbcl.org/getting.html) from source.
@@ -31,8 +35,10 @@ sbcl --no-sysinit --no-userinit --load quicklisp.lisp \
     --quit
 ```
 
-Now let's move our project into quicklisp's local-project
+Clone this repository and move this project into quicklisp's local-project
 ```
+git clone https://github.com/UNICT-DMI/web-relational-normalizer.git
+cd web-relational-normalizer
 mv fundep/ ~/.quicklisp/local-projects/fundep/
 mv newnormalizer/ ~/.quicklisp/local-projects/newnormalizer/
 ```
