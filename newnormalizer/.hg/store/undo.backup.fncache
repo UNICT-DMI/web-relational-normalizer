@@ -1,0 +1,15 @@
+data/www/colophon.html.i
+data/www/favicon.ico.i
+data/package.lisp.i
+data/fundep-basic-types.lisp.i
+data/www/index.html.i
+data/fundep-basic-algorithms.lisp.i
+data/www/help.html.i
+data/www/mystyle.css.i
+data/www/errors/404.html.i
+data/www/errors/500.html.i
+data/www/gear.js.i
+data/newnormalizer.asd.i
+data/parser.lisp.i
+data/README.md.i
+data/newnormalizer.lisp.i

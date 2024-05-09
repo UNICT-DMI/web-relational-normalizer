@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name = "viewport" content = "width = device-width">
+<link rel="stylesheet" type="text/css" href="mystyle.css">
+<title>Web Relational Normalizer</title>
+<script src="gear.js"></script>
+</head>
+
+<body>
+<div id=top-banner><h1 id=top-title>Web  Relational Normalizer</h1></div>
+
+<div class=topmenu>
+<div class=center>
+<!--<span class=top-menu-item><a href="javascript:window.open('colophon.html');">&nbsp;About this web site</a></span>-->
+<!--<span class=top-menu-item><a href="javascript:window.open('help.html');">How to use the normalizer&nbsp;</a></span>-->
+<input type=button class=greenbig onclick="window.open('colophon.html');" value="About this web site">
+<input type=button class=greenbig onclick="window.open('help.html');" value="How to use the normalizer">
+</div>
+</div>
+
+<div class=endmenu><p>&nbsp;</p> </div>
+
+<h3>1. Insert a relation schema (attributes and functional dependencies)</h3>
+<p>
+  <input type=button class="task" value="Generate an example" onclick="generate_example();">
+<p>
+<div class="table">
+   <div class="table-row">
+      <div class="table-cell"></div>
+      <div class="table-cell-centered">Relation R</div>
+   </div>
+   <div class="table-row">
+      <div class="table-cell-desc">Attributes of R: (separated by space or comma)</div>
+      <div class="table-cell"><textarea cols=55 rows=5
+  name="attrs" id="attrs"></textarea></div>
+   </div>
+   <div class="table-row">
+      <div class="table-cell-desc">Dependencies: (each dependency on a separate line, with the syntax <br/> A B -> C D and attributes separated by space or comma)</div>
+<div class="table-cell"><textarea cols=55 rows=10
+    name="deps" id="deps"></textarea></div>
+   </div>
+   <div class="table-row">
+      <div class="table-cell"></div>
+      <div class="table-cell"><input type="BUTTON" class="task" value="Syntax check" onclick="check_syn();"></div>
+   </div>
+</div>
+
+<h3>2.a Select a simple operation:</h3>
+
+<div class="menucol">
+  <div class="coltitle">
+    Perform a fully automated normalization.
+  </div>
+    <input type="BUTTON" class="task task1" value="Normalize" 
+	   onclick="one_rel();document.getElementById('xB').value='Normalize';setGlobal(16);resetHist();executeGlobal();">
+</div>
+
+<div class="menucol">
+  <div class="coltitle">
+    Check all the properties of a decomposition of R.
+  </div>
+  <input type="BUTTON" class="task task1" 
+	 onclick="one_decomp();document.getElementById('xB').value='Check the decomposition';setGlobal(20);" value="Check Decomposition…">
+</div>
+
+<div class="endmenu"> &nbsp; </div>
+
+<h3>2.b Or select an advanced operation:</h3>
+<div class="menucol">
+<div class="coltitle">Attributes and functional dependencies</div>
+<input type="BUTTON" class="task" value="Attibute set closure…" onclick="fundep_att();document.getElementById('xB').value='Closure';setGlobal(1);">
+<br/>
+<input type="BUTTON" class="task task1" 
+  onclick="fundep_att();document.getElementById('xB').value='Project dependencies';setGlobal(11);" value="Projection of dependency set…">
+</div>
+
+<div class="menucol">
+<div class="coltitle">Set of functional dependencies</div>
+<input type="BUTTON" class="task" 
+    onclick="two_deps();document.getElementById('xB').value='Logical implication';setGlobal(5);" value="Logical implication…"> 
+<br/>
+<input type="BUTTON" class="task" onclick="two_deps();document.getElementById('xB').value='Equivalence';setGlobal(6);" value="Equivalence…">
+ <br/>
+<input type="BUTTON" class="task" 
+    value="Canonicalization" onclick="only_dep();document.getElementById('xB').value='Canonicalize';setGlobal(2);resetHist();executeGlobal();">
+</div>
+
+<div class="menucol">
+  <div class="coltitle">Keys</div>
+  <input type="BUTTON" class="task" 
+	 onclick="one_rel();document.getElementById('xB').value='Find a keys';setGlobal(19);resetHist();executeGlobal();" value="Find a key">
+  <br/>
+  <input type="BUTTON" class="task task1" 
+	 onclick="one_rel();document.getElementById('xB').value='Find all keys';setGlobal(7);resetHist();executeGlobal();" value="Find all the keys">
+  <br/>
+  <input type="BUTTON" class="task task1" 
+	 onclick="one_rel();document.getElementById('xB').value='Find primes';setGlobal(8);resetHist();executeGlobal();" value="Find prime attributes">
+</div>
+
+<div class="menucol">
+<div class="coltitle">Boyce-Codd Normal Form</div>
+ <input type="BUTTON" class="task" value="Test BCNF" 
+    onclick="one_rel();document.getElementById('xB').value='Test for Boyce-Codd Normal Form';setGlobal(4);resetHist();executeGlobal();">
+<br/>
+<input type="BUTTON" class="task task1" 
+    onclick="one_rel();document.getElementById('xB').value='Boyce-Codd\
+ Normal Form';setGlobal(14);resetHist();executeGlobal();" value="Find BCNF">
+<br/>
+<input type="BUTTON" class="task task1" 
+    onclick="one_rel();document.getElementById('xB').value='Boyce-Codd\
+ Normal Form step by step';setGlobal(15);resetHist();executeGlobal();"
+    value="Find BCNF step by step">
+</div>
+
+<div class="menucol">
+<div class="coltitle">Third Normal Form</div>
+<input type="BUTTON" class="task task1" 
+    onclick="one_rel();document.getElementById('xB').value='Test for 3rd Normal Form';setGlobal(10);resetHist();executeGlobal();" value="Test 3NF">
+<br/>
+<input type="BUTTON" class="task" value="Find 3NF"
+  onclick="one_rel();document.getElementById('xB').value='Third Normal Form';setGlobal(3);resetHist();executeGlobal();">
+<br/>
+<input type="BUTTON" class="task task1"  value="Find 3NF with projection of dependencies"
+  onclick="one_rel();document.getElementById('xB').value='Third Normal Form with projection of dependencies';setGlobal(12);resetHist();executeGlobal();">
+<br/>
+<input type="BUTTON" class="task" 
+  value="Find 3NF with test for BCNF"
+  onclick="one_rel();document.getElementById('xB').value='Third Normal Form with test for BCNF';setGlobal(13);resetHist();executeGlobal();">
+</div>
+
+<div class="endmenu"> &nbsp; </div>
+
+<input type="checkbox" id="expl"> Show more information when available.
+
+<div style="display: none" class="datiulteriori">
+  <h3>3. Input additional data:</h3>
+  <div class="table">
+    <div class=2row>
+
+      <div class="table-row">     
+	<div class="table-cell-desc">
+	  <div class="2col">
+	    Dependencies: (each dependency on a separate line, with the syntax
+	    <br/> A B -> C D and attributes separated by space or comma)
+	  </div>
+	</div>	
+	<div class="table-cell">
+	  <div class=2col>
+	    <textarea cols=55 rows=10 name="deps2" id="deps2"></textarea>
+	  </div>
+	</div>
+      </div>
+
+      <div class=3row>
+	<div class="table-row">
+	  <div class="table-cell-desc">
+	    Attributes: (separated by space or comma)
+	  </div>
+	  <div class="table-cell">
+	    <textarea cols=55 rows=5 name="attrs2" id="attrs2"></textarea>
+	  </div>
+	</div>
+      </div>
+
+      <div class=4row>
+	<div class="table-row">
+	  <div class="table-cell-desc">
+	    Decomposed schemas: (attributes separated by space or comma and enclosed in parentheses for each schema)
+	  </div>
+	  <div class="table-cell">
+	    <textarea cols=55 rows=7 name="decomp" id="decomp"></textarea>
+	  </div>
+	</div>
+      </div>
+
+    </div>
+  </div>
+
+<div class="endmenu"> &nbsp; </div>
+
+<!--
+<table>
+<TR class="2row">
+<td class="2col" width=120>Dependencies:<br>(each dependency<br>on a separate line,<br>with
+  the syntax<br>A B -> C D)</td>
+    <td class="2col"><textarea cols=55 rows=12 name="deps2" id="deps2"></textarea></td>
+</TR>
+<tr class="3row">
+<td width=120>Attributes: (separated by spaces) </td>  <td> <textarea cols=55 rows=5
+  name="attrs2" id="attrs2"></textarea> </td>
+  </tr>
+</table>
+-->
+
+<h3>4. Execute the operation: <input id="xB" name="noop" type="BUTTON" onclick="resetHist();executeGlobal();" value="Execute"></h3>  <!--  type="SUBMIT" -->
+
+</div>
+
+<hr>
+
+<h3> Result: </h3>
+<div id="res"> &nbsp; </div>
+
+
+</body> </html>
+
+
+<!--
+
+function callback(response) {
+  var res = response;
+alert(res);
+        document.getElementById('res').innerHTML = res.firstChild.nodeValue;
+  if (res) {
+    res = response.firstChild;
+    if (res) {
+        document.getElementById('res').innerHTML = res.firstChild.nodeValue;
+    } else {
+      alert('no answer from the server!');
+    }
+  } else {
+    alert('No answer from the server!');
+  }
+}
+
+-->

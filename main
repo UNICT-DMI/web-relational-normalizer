@@ -1,0 +1,5 @@
+#!/usr/local/bin/sbcl --script
+(load "~/.quicklisp/setup.lisp")
+(ql:quickload "newnormalizer")
+(NN:start-web-server T)
+(sleep #xffffffff)

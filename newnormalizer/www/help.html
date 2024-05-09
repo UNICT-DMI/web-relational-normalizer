@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name = "viewport" content = "width = device-width">
+<link rel="stylesheet" type="text/css" href="mystyle.css">
+<!--<link href='http://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>-->
+<title>Web Relational Normalizer - Help Page</title>
+</head>
+
+<body>
+<div id=top-banner><h1 id=top-title>Help</h1></div>
+
+<h3>Use of the application</h3>
+<p>
+To use this application, follows the steps detailed below:
+<ol>
+  <li> Define a relation schema, i.e. a set of attributes and a set of functional dependencies.
+    (See the section <a class="und" href="#Syntax">Syntax of the input data</a> for the syntax accepted. See the section: <a class="und" href="#Limitations">Limitations<a> for limits on input data).
+  <li> Check for the correctness of the syntax by clicking on the "Syntax check" button.
+  <li> Select the operation desired through one of the buttons of the
+  section <span class=cmd>Select a simple operation</span> or <span class=cmd>Select an advanced operation</span>. The operation will be performed immediately, or it will require additional input. The operations requiring additional content are distinguished by the ellipsis after their name.
+   <li> Click on the control <span class=cmd>Show explanations when available</span> if you
+  want a detailed report of the steps executed by the algorithm. This
+  is available only for certain advanced operations.
+  <li> If the operation requires the input of additional data, enter them in the section <span class=cmd>Input additional data</span>, and press the button of the section <span class=cmd>Execute the
+  operation</span>. If you change your mind about the operation before requesting its
+  execution, you can chose another operation, and the system will try
+  to maintain as much as possibile the data inserted.
+  <li> The result will appear inside the <span class=cmd>Result</span> section.
+ </ol>
+ When a different operation is chosen, the input data are preserved as
+ much as possible, and the previous result is not canceled until the new operation is called.
+</p>
+
+ <h3><a name="Syntax">Syntax of the input data</a></h3>
+In order to allow the pasting of data into the required fields from
+ different sources and textbooks, as well as from the output of a
+ previous operation, the application is quite tolerant
+ about the syntax used. In particular:
+ <ol>
+  <li> <span class=enf>Attributes</span> You can insert attributes separating them either by
+   spaces, commas, or by other non alphanumeric characters. The following
+   are valid specifications of attributes:
+   <ul>
+     <li> A B
+     <li> (FkInvoice, InvoiceLineNo)
+     <li> a b<br> &nbsp;&nbsp;&nbsp;&nbsp;c - d -e
+     <li> Località, 属性, атрибут
+   </ul>
+   Finally, note that, due to the tolerance on the syntax and the fact that duplicate attributes are
+   automatically eliminated, you can paste in this field a set of functional dependencies and the system will find
+   automatically all the attributes of the relation.
+  <li> <span class=enf>Dependencies</span> The syntax for them, anologously to attributes,
+   allows a liberal use of non alphanumeric characters like comma or parenthesis. The only
+   two real requirements are the followings:
+   <ul>
+     <li> Each dependency must be on a single line.
+     <li> The determinant and the determinate must be separated by the
+     couple of characters '->'  (dash and greater than, contiguous), or
+     the single character '→' (rightwards arrow, Unicode U+2192).
+   </ul>
+   Example of dependencies:
+   <ul>
+     <li> a b  &nbsp;-> c d
+     <li> (a,b)->(c,d)
+     <li> a --> b
+     <li> {(a, b) → (c, d),<br>  &nbsp; (a) → (e, b)}>
+     <li> -> a b
+     <li> c -> 
+   </ul>
+   Note that last two examples of valid dependencies.
+   A dependency with an empty determinant describes attributes
+   with a constant value, while a dependency with an empty right part is trivial since it is always true.
+<br>
+   Finally, note that AB -> C is interpreted as: <span class=ital>the attribute AB
+   determines the attribute C</span>, and not: <span class=ital>the attributes A and B
+   determine the attribute C</span>, since there are no characters separating
+   A and B.
+<li> <span class=enf>Decompositions</span> Only the attributes of the different decompositions can be
+  written. Each group of attributes related to a decomposed relation must be enclosed in parentheses,
+  and the attributes must be separated by non alphanumeric characters, like spaces or commas.
+  Example of decomposition:
+  <br/>
+  (A, B, C)
+  <br/>
+  (A D E)
+  <br/>
+</ol>
+
+ <h4>Syntactic abbreviation for mutually determined attributes
+ sets</h4>
+ There is a notation which simplifies the writing of two dependencies in
+ which the determinant and the determinate exchange their role, like
+ in a -> b and b -> a. This couple of dependencies can be written in a
+ unique line as a<->b or a↔b, by using <-> (the three characters less-then dash greater-then,
+ countiguous), or ↔ (the single character left right arrow, Unicode
+ U+2194).
+
+<h3>Operations</h3>
+
+<h4>Simple Operations</h4>
+
+ <p>
+<ul>
+  <li> <span class=cmd>Normalize</span> A fully automated normalization is execute with the following steps:
+    <ul>
+      <li> A canonical cover of the dependencies is found.
+      <li> All the keys of the relation schema are found.
+      <li> The schema is checked for BCNF. If it is already in this normal form, the execution is terminated.
+      <li> The schema is checked for 3NF. If it is already in this normal form, the execution is terminated.
+      <li> A decomposition in BCNF is attempted with the analysis algorithm. If at least a dependency is lost,
+	the decomposition is discarded, otherwise the execution is terminated.
+      <li> A decomposition in 3NF with the synthesis algorithm is executed, and the resulting relations are
+	checked to see if they satisfy also the BCNF.
+    </ul>
+  <li> <span class=cmd>Check decomposition</span> The user must insert a decomposition.
+    The system analyses it to find if:
+    <ul>
+      <li> is correct (contains only the attributes of R and all of them),
+      <li> is redundant (containes schemas of relations contained in others),
+      <li> is lossless (nonadditive),
+      <li> preserves the dependencies.
+    </ul>
+    Finally, for each decomposed relation, the maximum (up to BCNF) normal form of the relation is printed,
+    togheter with a cover of the projection of the dependencies over the relation.
+</ul>
+
+<h4>Advanced Operations</h4>
+<p>    
+<ul>
+  <li> <span class=cmd>Attribute set closure</span> To find the closure of a set of attributes with
+    respect to the dependencies of a relational schema. The additional input are the attributes
+    over which the closure must be done.
+  <li> <span class=cmd>Projection of dependency set</span> To find a canonical form of the
+    projection of the dependencies of a relational schema over a set of attributes. The additional
+    input are the attributes over which the projection must be computed.
+  <li><span class=cmd>Logical implication</span> To test if a set of functional dependencies is
+    logically implied by the dependencies of a relational schema. The additional input are the
+    functional dependencies of the second set.
+  <li><span class=cmd>Equivalence</span> To test if a set of functional dependencies is equivalent the
+functional dependencies of a relational schema.
+  The additional input are the functional dependencies of the second set.
+  <li><span class=cmd>Canonicalize</span> To find a canonical cover of the set of functional dependencies of a
+relational schema. Note that the output of the command depend on the
+  order in which the dependencies are specified.
+  <li> <span class=cmd>Find keys</span>To find all the keys of a relational schema.
+  <li> <span class=cmd>Find prime attributes</span> To find all the attributes that appears in at least one candidate key
+of a relational schema.
+  <li><span class=cmd>Test BCNF</span> To test if a relational schema is in Boyce-Codd Normal
+  Form.
+  <li> <span class=cmd>Find BCNF</span> To find a lossless decomposition of a relational schema into the Boyce-Codd Normal
+  Form. The
+result may be not dependency-preserving,
+  <li> <span class=cmd>Find BCNF step by step</span> This operation is a variant of the previous one that allows the user
+to select the first functional dependency that must be eliminated by
+the system when there are multiple dependencies that violate the Boyce-Codd Normal
+  Form.
+<!--  a test is performed to check if the original dependencies are
+  implied by the union of the dependencies of the subschemas.-->
+  <li> <span class=cmd>Test 3NF</span> To test if a relational schema is in Third Normal Form.
+  <li> <span class=cmd>Find 3NF</span> To find a dependency-preserving and lossless decomposition of a
+    relational schema into Third Normal Form through the synthesis algorithm. Note that the operation
+    may decompose a relation even if it is already in Third Normal Form; however, the decomposition is still
+    guaranteed to be in Third Normal Form.
+  <li> <span class=cmd>Find 3NF with projection of dependencies</span> This operation is a variant of
+    the previous one to find also a canonical form of projection of the dependencies for each schema obtained.
+  <li> <span class=cmd>Find 3NF with test for BCNF</span> After decomposing in Third Normal Form, the resulting
+    relations are checked to see which of them is also in Boyce-Codd Normal Form.
+</ul>
+
+<h3><a name="Limitations">Limitations</a></h3>
+
+This application has two main limitations:
+
+<ol>
+  <li>You can insert at most 20000 characters in each field.</li>
+  <li>The number of attributes of a relation is restricted only by the total size of the field as specified in
+    the previous limit, but, if this number is greater than 50, then any operation marked in red
+    in the interface will not be performed. This is due to the fact that the complexity of their algorithm is,
+     in the worst case, esponential. </li>
+</ol>
+
+<!--
+Finally, note that the algorithms that uses directly or indirectly a
+brute force approach (<span class=cmd>Projection of dependency set</span>, <span class=cmd>Find keys</span>, <span class=cmd>Find
+prime attributes</span>, <span class=cmd>Find BCNF</span>, <span class=cmd>Find BCNF step by step</span>, <span class=cmd>Test 3NF</span>, <span class=cmd>Find
+3NF with projection of dependencies</span>) have a
+limit on the number of the attributes that can be given in
+input (currently 12).
+-->
+ </p>
+
+
+<div class=topmenu>
+<div class=center-small>
+<span class=top-menu-item><a href="javascript:window.close();">Close this window</a></span>
+</div>
+</div>
+<p class=endmenu>&nbsp;</p>
+
+
+
+</body> </html>
