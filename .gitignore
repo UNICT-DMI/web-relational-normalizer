@@ -17,3 +17,5 @@
 *.wx32fsl
 .DS_Store
 .hg
+.hgtags
+.flow
