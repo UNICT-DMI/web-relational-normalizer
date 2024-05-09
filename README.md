@@ -6,7 +6,7 @@ The code has little changes in order to resolve some issues during the startup p
 ## 🚀 Getting started
 There are two ways to run this repository: Docker or local installation.
 > [!NOTE]
-> Project's default port is 8080.
+> Project's default port is 8080 and can be edited in [newnormalizer.lisp](https://github.com/UNICT-DMI/web-relational-normalizer/blob/44c27d3f46651bdb92c5a1044a96b3d019a9c4ea/newnormalizer/newnormalizer.lisp#L188).
 
 ### 🐳 Docker
 The easiest is to use the image published in this repository or the Dockerfile available.
