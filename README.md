@@ -13,11 +13,11 @@ The easiest is to use the image published in this repository or the Dockerfile a
 In order to install the normalizer with the provided Dockerfile you need to clone this repository and `cd` into the cloned repo.
 ```
 docker build --tag 'relational-normalizer' .
-docker run -d --name  'web-relational-normalizer' 'relational-normalizer'
+docker run -d --name  'web-relational-normalizer' -p 8080:8080 'relational-normalizer'
 ```
 Or pulling the latest build image with
 ```
-docker run -d --name 'web-relational-normalizer' ghcr.io/unict-dmi/web-relational-normalizer:main
+docker run -d --name 'web-relational-normalizer' -p 8080:8080 ghcr.io/unict-dmi/web-relational-normalizer:main
 ```
 
 ### 💻 Local installation
